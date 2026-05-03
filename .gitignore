@@ -3,3 +3,6 @@ temp/
 cache_limit.txt
 videos/
 *.mkv
+*.mp4
+*.avi
+*.mov

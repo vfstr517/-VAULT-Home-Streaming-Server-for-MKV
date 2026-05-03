@@ -8,12 +8,15 @@ const app  = express();
 const PORT = 3000;
 
 // ============================================================
-//  CONFIGURE — point to your MKV folder
+//  CONFIGURE — point to your videos folder
 // ============================================================
 const VIDEOS_DIR = 'E:/Movies/videos';
 
 // Seconds to wait for GPU selection before defaulting to CPU
 const GPU_SELECT_TIMEOUT_S = 10;
+
+// Supported video file extensions
+const VIDEO_EXTS = /\.(mkv|mp4|m4v|mov|avi|wmv|ts|webm)$/i;
 
 // ============================================================
 
@@ -158,10 +161,10 @@ const ffmpegPath = p => p.replace(/\\/g, '/');
 app.get('/api/videos', (req, res) => {
   try {
     const files = fs.readdirSync(VIDEOS_DIR)
-      .filter(f => /\.mkv$/i.test(f))
+      .filter(f => VIDEO_EXTS.test(f))
       .map(f => ({
         filename: f,
-        displayName: f.replace(/\.mkv$/i, ''),
+        displayName: f.replace(VIDEO_EXTS, '').trim(),
         size: getFileSizeMB(path.join(VIDEOS_DIR, f))
       }));
     res.json(files);
